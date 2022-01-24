@@ -19,15 +19,18 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
     .then(user => {
+        if(!user) {
+            return res.status(401).json({ error: "il semblerait que votre email ou votre mot de passe soit incorect"})
+        }
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {
+            if(!valid) {
+                return res.status(401).json({ error: "il semblerait que votre email ou votre mot de passe soit incorect"})
+            }
             res.status(200).json({
                 userId: user._id,
                 token: jwt.sign({ userId: user._id }, `RDM_TOKEN_SECRET`, { expiresIn: '24h'})
             });
-            if(!user || !valid) {
-                return res.status(401).json({ error: "il semblerait que votre email ou votre mot de passe soit incorect"})
-            }
         })
         .catch(err => console.log(err));
     })
