@@ -26,7 +26,7 @@ exports.login = (req, res, next) => {
                 token: jwt.sign({ userId: user._id }, `RDM_TOKEN_SECRET`, { expiresIn: '24h'})
             });
             if(!user || !valid) {
-                return res.statut(401).json({ error: "il semblerait que votre email ou votre mot de passe soit incorect"})
+                return res.status(401).json({ error: "il semblerait que votre email ou votre mot de passe soit incorect"})
             }
         })
         .catch(err => console.log(err));
