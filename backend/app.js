@@ -6,7 +6,7 @@ const path = require('path');
 
 //***---créations de constante recupérant le chemin de nos routes---***/
 const userRoutes = require('./routes/userRoutes');
-
+const sauceRoutes = require('./routes/sauce');
 //***---initialisation de la variable app qui contient la fonction express---***/
 const app = express();
 
@@ -28,7 +28,10 @@ app.use((req, res, next) => {
 
 //***------***/
 app.use(bodyParser.json());
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', userRoutes);
+app.use('/api/sauces', sauceRoutes);
 
 //***---Package installée => express => mongoose => bcrypt => multer => bodyParser => mongoose unique validator => nodemon => jsonwebtoken => path---***/
 module.exports = app;
