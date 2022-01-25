@@ -6,7 +6,7 @@ const path = require('path');
 
 //***---créations de constante recupérant le chemin de nos routes---***/
 const userRoutes = require('./routes/userRoutes');
-const sauceRoutes = require('./routes/sauce');
+const sauceRoutes = require('./routes/sauceRoutes');
 //***---initialisation de la variable app qui contient la fonction express---***/
 const app = express();
 

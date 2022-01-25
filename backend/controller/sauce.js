@@ -18,13 +18,17 @@ exports.getOneSauce = (req, res, next) => {
 };
 
 //***---Controlleur de création de sauce---***/
-exports.createSauce() = (req, res, next) => {
+exports.createSauce = (req, res, next) => {
     const getCreateSauce = JSON.parse(req.body.sauce);
+    delete getCreateSauce._id;
     const sauce = new Sauce({
         ...getCreateSauce,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     sauce.save()
-    .then(() => res.status(201).json({ message: "votre sauce est ajoutée" }))
-    .catch(err => res.status(400).json({ err }))
-}
+    .then(() => res.status(201).json({ message: 'sauce ajouté avec succés.'}))
+    .catch(err => {
+        res.status(400).json({ err });
+        console.log(err);
+    });
+};

@@ -1,5 +1,5 @@
 //***---Déclaration des variable contenant les packages requis---***/
-const jwt = require('jsonwwebtoken');
+const jwt = require('jsonwebtoken');
 //***---Exportation de la fonction de création de token pour l'utilisateur---***/
 module.exports = (req, res, next) => {
     try {
