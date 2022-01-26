@@ -46,7 +46,7 @@ exports.modifySauce = (req, res, next) => {
                 const filename = sauce.imageUrl.split('/images/')[1];
                 const getModifySauce = JSON.parse(req.body.sauce);
                 fs.unlink(`images/${filename}`, () => {
-                    const newModification = {
+                    let newModification = {
                         ...getModifySauce,
                         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                     };
@@ -55,7 +55,7 @@ exports.modifySauce = (req, res, next) => {
                     .catch(err => res.status(400).json({ err }));
                 })
             }else {
-                const newModification = { ...req.body};
+                let newModification = { ...req.body};
                 Sauce.updateOne({ _id: req.params.id }, { ...newModification, _id: req.params.id })
                 .then(() => res.status(200).json({ message: 'Modification effectuée avec succés.' }))
                 .catch(err => res.status(400).json({ err }));
@@ -86,7 +86,6 @@ exports.deleteSauce = (req, res, next) => {
 exports.likeDislikeSauce = (req, res, next) => {
     const userId = req.body.userId;
     const like = req.body.like;
-    console.log(req.params)
     Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
         const getLikeDislike = {
@@ -96,20 +95,20 @@ exports.likeDislikeSauce = (req, res, next) => {
             dislikes: 0
         }
         if(like == 1) {
-            getLikeDislike.usersLiked.push(userId);
-            const index = getLikeDislike.usersDisliked.indexOf(userId);
-            getLikeDislike.usersDisliked.splice(index, 1);
-        }
+            getLikeDislike.usersLiked.push(userId);  
+        };
         if(like == -1) {
-            getLikeDislike.usersLiked.push(userId);
-            const index = getLikeDislike.usersLiked.indexOf(userId);
-            getLikeDislike.usersLiked.splice(index, 1);
-        }
+            getLikeDislike.usersDisliked.push(userId);
+        };
+        if(like == 0) {
+            getLikeDislike.usersLiked.splice(userId);
+            getLikeDislike.usersDisliked.splice(userId);
+        };
         getLikeDislike.likes = getLikeDislike.usersLiked.length;
         getLikeDislike.dislikes = getLikeDislike.usersDisliked.length;
         Sauce.updateOne({ _id: req.params.id}, getLikeDislike)
         .then(() => res.status(200).json({ message: "votre avis a été pris en compte."}))
         .catch(err => res.status(400).json({ err }))
     })
-    .catch(error => res.status(500).json({ error}));
+    .catch(error => res.status(500).json({ error }));
 }
