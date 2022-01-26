@@ -27,7 +27,10 @@ exports.createSauce = (req, res, next) => {
     });
     sauce.save()
     .then(() => res.status(201).json({ message: 'sauce ajouté avec succés.'}))
-    .catch(err => { res.status(400).json({ err })})
+    .catch(err => {
+        res.status(400).json({ err });
+        console.log(err);
+    });
 };
 
 //***---Controlleur de modification de sauce---***/
@@ -62,18 +65,17 @@ exports.modifySauce = (req, res, next) => {
 
 //***---Controlleur de suppression de sauce---***/
 exports.deleteSauce = (req, res, next) => {
+
     Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
-        if(sauce.userId != req.body.userId) {
-            res.status(401).json({ message: 'il semblerait que cette sauce ne soit pas à vous.'})
-        }else {
-            const sauceName = sauce.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${sauceName}`, () => {
-                Sauce.deleteOne({ _id: req.params.id })
-                .then(() => res.status(200).json({ message: "votre sauce est supprimée."}))
-                .catch(err => res.status(400).json({ err }))
-            })
-        } 
+
+        const sauceName = sauce.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${sauceName}`, () => {
+            Sauce.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: "votre sauce est supprimée."}))
+            .catch(err => res.status(400).json({ err }))
+        })
+        
     })
     .catch(err => res.status(500).json({ err }));
 };
