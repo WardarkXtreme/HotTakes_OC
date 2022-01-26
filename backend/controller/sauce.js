@@ -62,3 +62,17 @@ exports.modifySauce = (req, res, next) => {
     })
     .catch(err => res.status(500).json({ err }));
 };
+
+//***---Controlleur de suppression de sauce---***/
+exports.deleteSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id })
+    .then(sauce => {
+        const sauceName = sauce.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${sauceName}`, () => {
+            Sauce.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: "votre sauce est supprimée."}))
+            .catch(err => res.status(400).json({ err }))
+        })
+    })
+    .catch(err => res.status(500).json({ err }));
+};
