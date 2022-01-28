@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
         const decodedToken = jwt.verify(token, process.env.SECRET_T);
         const userId = decodedToken.userId;
         if (req.body.userId && req.body.userId !== userId) {
-            throw 'Cet utilisateur est inconnu.';
+            throw 'Le résultat de comparaison ne vous permet pas de continuer.';
         } else {
             next();
         }
