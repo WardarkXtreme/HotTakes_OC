@@ -7,6 +7,6 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true }
 });
 //***---la constante userSchema va être controller par le plugin unique validator---***//
-userSchema.plugin(uniqueValidator);
+userSchema.plugin(uniqueValidator, { message: 'Erreur, veuillez réessayer de vous inscrire avec un autre email.' });
 //maintenant nous exportons ce models pour qu'il puisse servir lors de l'appel---***//
 module.exports = mongoose.model('User', userSchema);
