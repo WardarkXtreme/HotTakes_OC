@@ -41,7 +41,7 @@ exports.modifySauce = (req, res, next) => {
         .then(sauce => {
             const verify = JSON.parse(req.body.sauce);
             if(sauce.userId != verify.userId) {
-                return res.status(401).json({ message: 'il semblerait que cette sauce ne soit pas à vous.'})
+                return res.status(403).json({ message: 'il semblerait que cette sauce ne soit pas à vous.'})
             }else {
 
                 const filename = sauce.imageUrl.split('/images/')[1];

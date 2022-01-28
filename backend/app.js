@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
+require('dotenv').config();
 
 //***---créations de constante recupérant le chemin de nos routes---***/
 const userRoutes = require('./routes/userRoutes');
@@ -11,7 +12,7 @@ const sauceRoutes = require('./routes/sauceRoutes');
 const app = express();
 
 //***---initialisation du chemin d'accées de mongo, et des paramêtre de conection---***/
-const srcDb = 'mongodb+srv://flodev:flo001@cluster0.l4gnm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const srcDb = process.env.SECRET_DB;
 //***---Connexion a la base de donnée mongoDb---***/
 mongoose.connect(srcDb, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("la connexion est étabie"))

@@ -1,6 +1,7 @@
 //***---Importation des packages requis---***/
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 //***---Importation du Model Nécessaire aux controllers---***/
 const User = require("../models/User");
 //***---Création des fonctions de controlles---***/
@@ -29,7 +30,7 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({
                 userId: user._id,
-                token: jwt.sign({ userId: user._id }, `RDM_TOKEN_SECRET`, { expiresIn: '24h'})
+                token: jwt.sign({ userId: user._id }, process.env.SECRET_T, { expiresIn: '24h'})
             });
         })
         .catch(err => console.log(err));
